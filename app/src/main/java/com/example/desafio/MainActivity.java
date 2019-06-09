@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -19,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
 
     ArrayList<Person> lista = new ArrayList<>();
     Person person;
+    Context context = MainActivity.this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
         person = new Person(nome.getText().toString(), rg.getText().toString(), matricula.getText().toString(), curso.getText().toString());
 
         lista.add(person);
+        Toast.makeText(context, "Create", Toast.LENGTH_LONG).show();
+
     }
 
     public void show(View v) {
@@ -47,6 +51,39 @@ public class MainActivity extends AppCompatActivity {
         editPanel.setVisibility(View.INVISIBLE);
     }
 
+    public void delete(View v) {
+        EditText matricula = findViewById(R.id.matriculaDeletar);
+
+        try {
+            lista.removeIf(x -> x.matricula.equals(matricula.getText().toString()));
+        } catch (Exception ex) {
+            Toast.makeText(context, "Matricula nao encontrada", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        Toast.makeText(context, "Delete", Toast.LENGTH_LONG).show();
+    }
+
+    public void update(View v) {
+        EditText nome = findViewById(R.id.nome);
+        EditText matricula = findViewById(R.id.matricula);
+        EditText rg = findViewById(R.id.rg);
+        EditText curso = findViewById(R.id.curso);
+
+        try {
+            Person person = lista.stream().filter(x -> x.matricula.equals(matricula.getText().toString())).findFirst().get();
+
+            person.nome = nome.getText().toString();
+            person.rg = rg.getText().toString();
+            person.curso = curso.getText().toString();
+        } catch (Exception ex) {
+            Toast.makeText(context, "Matricula nao encontrada", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        Toast.makeText(context, "Update", Toast.LENGTH_LONG).show();
+    }
+
     public void back(View v) {
         LinearLayout showPanel = findViewById(R.id.showPanel);
         LinearLayout editPanel = findViewById(R.id.editPanel);
@@ -57,6 +94,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void list() {
         LinearLayout listPanel = findViewById(R.id.listPanel);
+        if ((listPanel).getChildCount() > 0)
+            (listPanel).removeAllViews();
 
         for (Person p : lista) {
 
@@ -84,8 +123,8 @@ public class MainActivity extends AppCompatActivity {
 
             empty.setHeight(30);
 
-            listPanel.addView(nome);
             listPanel.addView(matricula);
+            listPanel.addView(nome);
             listPanel.addView(rg);
             listPanel.addView(curso);
             listPanel.addView(empty);
@@ -101,24 +140,45 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int menuId = item.getItemId();
-        Context context = MainActivity.this;
+        Button buttonAdd = findViewById(R.id.buttonAdd);
+        Button buttonUpdate = findViewById(R.id.buttonUpdate);
+
+        EditText matricula = findViewById(R.id.matricula);
+        EditText nome = findViewById(R.id.nome);
+        EditText rg = findViewById(R.id.rg);
+        EditText curso = findViewById(R.id.curso);
 
         LinearLayout showPanel = findViewById(R.id.showPanel);
         LinearLayout editPanel = findViewById(R.id.editPanel);
+        LinearLayout deletePanel = findViewById(R.id.deletePanel);
 
         if (menuId == R.id.create) {
-            Toast.makeText(context, "Create", Toast.LENGTH_LONG).show();
-            showPanel.setVisibility(View.INVISIBLE);
             editPanel.setVisibility(View.VISIBLE);
+            showPanel.setVisibility(View.INVISIBLE);
+            deletePanel.setVisibility(View.INVISIBLE);
+            buttonAdd.setVisibility(View.VISIBLE);
+            buttonUpdate.setVisibility(View.INVISIBLE);
+
+
         } else if (menuId == R.id.read) {
             Toast.makeText(context, "Read", Toast.LENGTH_LONG).show();
             list();
             showPanel.setVisibility(View.VISIBLE);
             editPanel.setVisibility(View.INVISIBLE);
+            deletePanel.setVisibility(View.INVISIBLE);
+
         } else if (menuId == R.id.update) {
-            Toast.makeText(context, "Update", Toast.LENGTH_LONG).show();
+            editPanel.setVisibility(View.VISIBLE);
+            showPanel.setVisibility(View.INVISIBLE);
+            deletePanel.setVisibility(View.INVISIBLE);
+            buttonAdd.setVisibility(View.INVISIBLE);
+            buttonUpdate.setVisibility(View.VISIBLE);
+
         } else if (menuId == R.id.delete) {
-            Toast.makeText(context, "Delete", Toast.LENGTH_LONG).show();
+            deletePanel.setVisibility(View.VISIBLE);
+            showPanel.setVisibility(View.INVISIBLE);
+            editPanel.setVisibility(View.INVISIBLE);
+
         }
         return super.onOptionsItemSelected(item);
     }

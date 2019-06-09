@@ -16,10 +16,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="nome" />
+                android:text="matricula" />
 
             <EditText
-                android:id="@+id/nome"
+                android:id="@+id/matricula"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content" />
         </LinearLayout>
@@ -32,10 +32,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="matricula" />
+                android:text="nome" />
 
             <EditText
-                android:id="@+id/matricula"
+                android:id="@+id/nome"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content" />
         </LinearLayout>
@@ -73,10 +73,19 @@
         </LinearLayout>
 
         <Button
+            android:id="@+id/buttonAdd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="add"
             android:text="ADD" />
+
+        <Button
+            android:id="@+id/buttonUpdate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="update"
+            android:text="UPDATE"
+            android:visibility="invisible" />
 
         <Button
             android:layout_width="match_parent"
@@ -113,5 +122,29 @@
 
         </ScrollView>
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/deletePanel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="invisible">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="matricula" />
+
+        <EditText
+            android:id="@+id/matriculaDeletar"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="delete"
+            android:text="DELETE" />
     </LinearLayout>
 </FrameLayout>
